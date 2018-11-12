@@ -25,15 +25,22 @@ public class EventChannel {
     private ArrayList<Player> playersList;
 
     public void registerPlayer(Player plr) {
-        this.playersList.add(plr);
+        if (playersList != null) {
+            this.playersList.add(plr);
+        } else {
+            playersList = new ArrayList<Player>();
+        }
     }
 
     public void unregisterPlayer() {
-
+        // TODO
+//        this.playersList.
     }
 
     // Send messages to all players - TODO beside sender !
     public void updatePlayers (Message msg) {
+
+        System.out.println("EventChannel - updatePlayers");
 
         if(this.playersList == null) {
             return;

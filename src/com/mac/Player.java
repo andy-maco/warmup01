@@ -17,7 +17,11 @@ public class Player {
             Message currentMessage = getMessage();
             currentMessage.incrementCount();
         } else {
-            Message message = new Message(msgText, 0);
+            Message msg = new Message(msgText, 0);
+            EventChannel eventChannel = EventChannel.getInstance();
+            eventChannel.updatePlayers(msg);
+
+            System.out.println("First message sended");
         }
     }
 
@@ -26,12 +30,16 @@ public class Player {
         msg.incrementCount();
         EventChannel eventChannel = EventChannel.getInstance();
         eventChannel.updatePlayers(msg);
+
+        System.out.println("Message sended");
     }
 
     // Receive message and sent back
     public void receiveMessage(Message msg) {
         msg.incrementCount();
         this.sendMessage(msg);
+
+        System.out.println("Message received");
     }
 
     public Message getMessage() {
