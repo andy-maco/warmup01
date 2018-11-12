@@ -11,7 +11,7 @@ public class Player {
 
     private Message message;
 
-    public boolean sendMessage(String msgText) {
+    public void sendMessage(String msgText) {
 
         if(this.message != null) {
             Message currentMessage = getMessage();
@@ -19,13 +19,19 @@ public class Player {
         } else {
             Message message = new Message(msgText, 0);
         }
-
-        return true;
     }
 
-    public boolean receiveMessage() {
+    // Update message and sent back
+    public void sendMessage(Message msg) {
+        msg.incrementCount();
+        EventChannel eventChannel = EventChannel.getInstance();
+        eventChannel.updatePlayers(msg);
+    }
 
-        return true;
+    // Receive message and sent back
+    public void receiveMessage(Message msg) {
+        msg.incrementCount();
+        this.sendMessage(msg);
     }
 
     public Message getMessage() {
