@@ -10,6 +10,9 @@ import java.util.List;
  */
 public class EventChannel {
 
+    private static final int STOP_AT = 10;
+    private int queueCount;
+
     // Singleton
     private EventChannel() { }
 
@@ -38,17 +41,30 @@ public class EventChannel {
     }
 
     // Send messages to all players - TODO beside sender !
-    public void updatePlayers (Message msg) {
+    public void updatePlayers (Message msg, int playerNum) {
 
         System.out.println("EventChannel - updatePlayers");
 
-        if(this.playersList == null) {
+        if (queueCount > STOP_AT) {
+            System.out.println("EventChannel queue: " + queueCount);
             return;
         } else {
-            for (Player plr : this.playersList) {
-                plr.receiveMessage(msg);
+            System.out.println("EventChannel queue: " + queueCount);
+            queueCount++;
+        }
 
+        if(this.playersList != null) {
+            for (Player plr : this.playersList) {
+                if (plr.getPlayerNumber() != playerNum) {
+                    plr.receiveMessage(msg);
+
+                    System.out.println("EventChannel - message sent to Player" + plr.getPlayerNumber());
+                } else {
+                    // Do not send to sender player
+                }
             }
+        } else {
+            System.out.println("EventChannel - empty players list");
         }
     }
 

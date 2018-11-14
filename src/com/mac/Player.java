@@ -11,7 +11,17 @@ public class Player {
 
     private Message message;
 
-    public void sendMessage(String msgText) {
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    private int playerNumber;
+
+    public Player(int pNum) {
+        this.playerNumber = pNum;
+    }
+
+    public void sendMessage(String msgText, int playerNumber) {
 
         if(this.message != null) {
             Message currentMessage = getMessage();
@@ -19,27 +29,29 @@ public class Player {
         } else {
             Message msg = new Message(msgText, 0);
             EventChannel eventChannel = EventChannel.getInstance();
-            eventChannel.updatePlayers(msg);
+            eventChannel.updatePlayers(msg, playerNumber);
 
-            System.out.println("First message sended");
+            System.out.println("First message sent");
         }
     }
 
     // Update message and sent back
-    public void sendMessage(Message msg) {
+    public void sendMessage(Message msg, int playerNumber) {
         msg.incrementCount();
         EventChannel eventChannel = EventChannel.getInstance();
-        eventChannel.updatePlayers(msg);
+        eventChannel.updatePlayers(msg, playerNumber);
 
-        System.out.println("Message sended");
+        System.out.println("Message sent");
     }
 
     // Receive message and sent back
     public void receiveMessage(Message msg) {
-        msg.incrementCount();
-        this.sendMessage(msg);
-
         System.out.println("Message received");
+
+        msg.incrementCount();
+        this.sendMessage(msg, playerNumber);
+        System.out.println("Message sent back");
+
     }
 
     public Message getMessage() {
