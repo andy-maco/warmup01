@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class EventChannel {
 
-    private static final int STOP_AT = 10;
+    private static final int STOP_AT_LIMIT = 10;
     private int stepCount;
 
     // Singleton
@@ -56,13 +56,11 @@ public class EventChannel {
      * @param senderPlayerNum
      */
     public void updatePlayers (Message msg, int senderPlayerNum) {
-
-        System.out.println("\t EventChannel - updatePlayers (step: " + stepCount + ") -->");
-
+//        System.out.println("\t EventChannel - updatePlayers (step: " + stepCount + "):");
 //        System.out.println("\t EventChannel subscribed players: " + this.subscribersList.size());
 
-        if (stepCount >= STOP_AT) {
-            System.out.println("\t EventChannel queue stopped at: " + stepCount);
+        if (stepCount >= STOP_AT_LIMIT) {
+            System.out.println("\nEventChannel queue stopped at: " + stepCount + ", constant limit: " + STOP_AT_LIMIT);
             return;
         } else {
             stepCount++;
@@ -71,22 +69,19 @@ public class EventChannel {
         if(this.subscribersList != null) {
             for (Player plr : this.subscribersList) {
 
-                System.out.println("\t EventChannel - current player " + plr.getPlayerNumber());
+//                System.out.println("\t EventChannel - current player " + plr.getPlayerNumber());
 
                 if (plr.getPlayerNumber() != senderPlayerNum) {
-                    System.out.println("\t EventChannel - message " + msg.getMessageCount() + " sent to Player" + plr.getPlayerNumber());
+//                    System.out.println("\t EventChannel - message " + msg.getMessageCount() + " -> sent to Player" + plr.getPlayerNumber());
                     plr.receiveMessage(msg);
 
                 } else {
                     // Do not send to sender player
-                    System.out.println("\t EventChannel - message NO need to send to sender");
                 }
             }
         } else {
             System.out.println("EventChannel - empty players list");
         }
-
-        System.out.println("EventChannel - updatePlayers <-- \n");
     }
 
 }

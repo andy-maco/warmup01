@@ -21,19 +21,16 @@ public class Player {
     }
 
     /**
-     * Send first message
+     * Sent first message
      *
      * @param msgText
      */
     public void sendMessage(String msgText) {
-
-        System.out.println("First message sent start. By player " + this.playerNumber);
+        System.out.println("\nMessage: 0 -> sent by Player " + this.playerNumber);
 
         Message msg = new Message(msgText, 0);
         EventChannel eventChannel = EventChannel.getInstance();
         eventChannel.updatePlayers(msg, this.playerNumber);
-
-        System.out.println("First message sent finish. By player " + this.playerNumber);
     }
 
     /**
@@ -42,11 +39,11 @@ public class Player {
      * @param msg
      */
     public void sendMessage(Message msg) {
+        System.out.println("Message: " + msg.getMessageCount() + " -> sent by Player " + this.playerNumber);
 
         EventChannel eventChannel = EventChannel.getInstance();
         eventChannel.updatePlayers(msg, this.playerNumber);
 
-        System.out.println("Message sent. Num: " + msg.getMessageCount() + " by Player " + this.playerNumber);
     }
 
     /**
@@ -55,7 +52,7 @@ public class Player {
      * @param msg
      */
     public void receiveMessage(Message msg) {
-        System.out.println("Player " + this.getPlayerNumber() + " received message #: " + msg.getMessageCount());
+        System.out.println("\t Player " + this.getPlayerNumber() + " <- received message: " + msg.getMessageCount());
 
         // Update message counter
         msg.incrementCount();
