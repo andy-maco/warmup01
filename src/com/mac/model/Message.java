@@ -1,4 +1,4 @@
-package com.mac.Model;
+package com.mac.model;
 
 public class Message {
 

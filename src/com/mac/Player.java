@@ -1,6 +1,7 @@
 package com.mac;
 
-import com.mac.Model.Message;
+import com.mac.model.Message;
+import com.mac.service.EventChannel;
 
 /**
  * Реализовать класс Player, который умеет отправлять и получать сообщения
@@ -8,8 +9,6 @@ import com.mac.Model.Message;
  * Player2 дополняет полученное сообщение счетчиком полученных сообщение и отправляет обратно, Player1 отвечает аналогично
  */
 public class Player {
-
-    private Message message;
 
     public int getPlayerNumber() {
         return playerNumber;
@@ -21,44 +20,45 @@ public class Player {
         this.playerNumber = pNum;
     }
 
-    public void sendMessage(String msgText, int playerNumber) {
+    /**
+     * Send first message
+     *
+     * @param msgText
+     */
+    public void sendMessage(String msgText) {
 
-        if(this.message != null) {
-            Message currentMessage = getMessage();
-            currentMessage.incrementCount();
-        } else {
-            Message msg = new Message(msgText, 0);
-            EventChannel eventChannel = EventChannel.getInstance();
-            eventChannel.updatePlayers(msg, playerNumber);
+        System.out.println("First message sent start. By player " + this.playerNumber);
 
-            System.out.println("First message sent");
-        }
-    }
-
-    // Update message and sent back
-    public void sendMessage(Message msg, int playerNumber) {
-        msg.incrementCount();
+        Message msg = new Message(msgText, 0);
         EventChannel eventChannel = EventChannel.getInstance();
-        eventChannel.updatePlayers(msg, playerNumber);
+        eventChannel.updatePlayers(msg, this.playerNumber);
 
-        System.out.println("Message sent");
+        System.out.println("First message sent finish. By player " + this.playerNumber);
     }
 
-    // Receive message and sent back
+    /**
+     * Sent message
+     *
+     * @param msg
+     */
+    public void sendMessage(Message msg) {
+
+        EventChannel eventChannel = EventChannel.getInstance();
+        eventChannel.updatePlayers(msg, this.playerNumber);
+
+        System.out.println("Message sent. Num: " + msg.getMessageCount() + " by Player " + this.playerNumber);
+    }
+
+    /**
+     * Receive message, update and sent back
+     *
+     * @param msg
+     */
     public void receiveMessage(Message msg) {
-        System.out.println("Message received");
+        System.out.println("Player " + this.getPlayerNumber() + " received message #: " + msg.getMessageCount());
 
+        // Update message counter
         msg.incrementCount();
-        this.sendMessage(msg, playerNumber);
-        System.out.println("Message sent back");
-
-    }
-
-    public Message getMessage() {
-        return message;
-    }
-
-    public void setMessage(Message message) {
-        this.message = message;
+        this.sendMessage(msg);
     }
 }
